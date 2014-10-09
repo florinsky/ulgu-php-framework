@@ -12,23 +12,22 @@ class Application {
     public $conf_file;
     public $conf;
 
-    private $log_buffer;
-
     public function __construct($conf_file) {
         $this->conf_file = $conf_file;
         spl_autoload_register(array($this,'autoload'));
     }
 
     private function init() {
-        $this->log('Creating an Application object ...');
+        X::$app = $this;
+        X::debug('Creating an Application object ...');
         $this->processConfig();
         if(isset($this->conf['components'])) {
-            $this->log('Loading application components ...');
+            X::debug('Loading application components ...');
             foreach($this->conf['components'] as $field=>$component) {
-                $this->log("Loading $field ...");
+                X::debug("Loading $field ...");
                 $this->$field = $this->createObject($component);
             }
-            $this->log("Done.");
+            X::debug("Done.");
         }
     }
 
@@ -37,7 +36,7 @@ class Application {
      **/
     private function processConfig() {
         $this->conf = include($this->conf_file);
-        $this->log("Configuration file [{$this->conf_file}] read.");
+        X::debug("Configuration file [{$this->conf_file}] read.");
         if(!isset($this->conf['application'])) {
             $this->conf['application'] = [];
         }
@@ -47,37 +46,7 @@ class Application {
         if(!isset($this->conf['application']['debug'])) {
             $this->conf['application']['debug'] = true;
         }
-        $this->log("Loaded and processed configuration:\n".Dumper::dump($this->conf));
-    }
-
-    /**
-     * The system log service.
-     * It uses the logger component with the name 'syslog'.
-     * To enable this feature add the following to the configuration:
-     * 'components'=>[
-     *   ...
-     *   'syslog'=>[
-     *       'class'=>'\X\components\logger\Logger',
-     *       'writer'=>[
-     *           'class'=>'\X\components\logger\LogFileWriter',
-     *           'log_file'=>$root.'/x.syslog.log',
-     *       ]
-     *   ],
-     *   ...
-     **/
-    public function log($msg) {
-        if(@$this->syslog) {
-            // flush the internal buffer
-            if(!empty($this->log_buffer)) {
-                foreach($this->log_buffer as $m) {
-                    $this->syslog->info($m);
-                }
-                $this->log_buffer = [];
-            }
-            $this->syslog->info($msg);
-            return;
-        }
-        $this->log_buffer[] = $msg;
+        X::debug("Loaded and processed configuration:", $this->conf);
     }
 
     private function autoload($name) {
@@ -92,13 +61,12 @@ class Application {
 
     public function run() {
         $this->init();
-        X::$app = $this;
         X::$app->logger->info('Hello!');
-        $this->request->get('aa');
+        $_GET['r'] = 'aaaa/ssss';
     }
 
     /**
-     * Create object based on $conf array. I uses the key 'class' (array key) to specify the class name.
+     * Create object based on $conf array. It uses the key 'class' (array key) to specify the class name.
      * Example:
      * $conf = [
      *     'class'=>'X\components\logger\Logger,
@@ -136,7 +104,7 @@ class Application {
         }
         $class = $options['class'];
         unset($options['class']);
-        $this->log('Creating object '.$class);
+        X::debug('Creating object '.$class);
         return new $class($options);
     }
 }

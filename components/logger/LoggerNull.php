@@ -9,10 +9,10 @@ class LoggerNull extends Component implements ILogger {
     public function __construct($options) {
     }
 
-    public function info($msg) {
+    public function info() {
     }
 
-    public function err($msg) {
+    public function err() {
     }
 }
 

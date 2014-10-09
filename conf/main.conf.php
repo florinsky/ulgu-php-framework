@@ -18,13 +18,15 @@ $main = [
         'debug'=>false,
     ],
     'components'=>[
-        'syslog'=>[
+        // framework level logging service
+        'debug'=>[
             'class'=>'\X\components\logger\Logger',
             'writer'=>[
                 'class'=>'\X\components\logger\LogFileWriter',
-                'log_file'=>$root.'/runtime/x.syslog.log',
+                'log_file'=>$root.'/runtime/x.framework.log',
             ]
         ],
+        // application (user space) level logging service
         'logger'=>[
             'class'=>'\X\components\logger\Logger',
             'writer'=>[

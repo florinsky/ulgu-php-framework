@@ -16,7 +16,7 @@ class LogFileWriter extends Component implements ILogWriter {
         $this->log_file = $options['log_file'];
     }
 
-    public function write($msg, $level) {
+    public function write($msg) {
         File::append($this->log_file,$msg);
     }
 }

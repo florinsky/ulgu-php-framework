@@ -21,7 +21,13 @@ class Request extends Component {
         }
     }
     public function getRoute() {
-        return ['Frontend','index'];
+        $r = $this->get('r');
+        if($r) {
+            list($c,$a) =  explode('/',$r);
+            return [$c,$a];
+        } else {
+            return null;
+        }
     }
 }
 

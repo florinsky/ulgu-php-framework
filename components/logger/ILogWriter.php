@@ -3,5 +3,5 @@
 namespace X\components\logger;
 
 interface ILogWriter {
-    public function write($msg, $level);
+    public function write($msg);
 }
