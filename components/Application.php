@@ -61,8 +61,16 @@ class Application {
 
     public function run() {
         $this->init();
-        X::$app->logger->info('Hello!');
+        X::debug('Initialization completed.');
         $_GET['r'] = 'aaaa/ssss';
+        $result = $this->doAction();
+    }
+
+    private function doAction() {
+        list($controller,$action) = $this->request->getRoute();
+        if($controller==null) {
+            // reponse404
+        }
     }
 
     /**

@@ -37,6 +37,5 @@ class X {
 
 }
 
-require 'components/functions.php';
 require 'components/Application.php';
 
