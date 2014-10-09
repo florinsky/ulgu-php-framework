@@ -1,6 +1,6 @@
 <?php
 
-namespace X\Component;
+namespace X\Components;
 
 require 'component/Component.php';
 require 'component/Application.php';

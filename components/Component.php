@@ -1,5 +1,5 @@
 <?php
-namespace X\Component;
+namespace X\Components;
 
 class Component {
 }
