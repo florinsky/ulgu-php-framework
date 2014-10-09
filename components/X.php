@@ -35,6 +35,10 @@ class X {
         $buff[] = $args;
     }
 
+    static public function param($key) {
+        return self::$app->param($key);
+    }
+
 }
 
 require 'components/Application.php';

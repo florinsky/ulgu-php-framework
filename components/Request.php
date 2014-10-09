@@ -23,7 +23,7 @@ class Request extends Component {
     public function getRoute() {
         $r = $this->get('r');
         if($r) {
-            list($c,$a) =  explode('/',$r);
+            @list($c,$a) =  explode('/',$r);
             return [$c,$a];
         } else {
             return null;

@@ -16,6 +16,8 @@ $main = [
     'application'=>[
         'name'=>'This is a Test Application',
         'debug'=>false,
+        'defaultController'=>'Front',
+        'defaultAction'=>'index',
     ],
     'components'=>[
         // framework level logging service
