@@ -5,7 +5,7 @@
 <?php echo $content; ?>
 <h3>The system log</h3>
 <pre>
-<?php echo X\components\helpers\File::get('runtime/x.framework.log'); ?>
+<?php //echo X\components\helpers\File::get('runtime/x.framework.log'); ?>
 </pre>
 </body>
 

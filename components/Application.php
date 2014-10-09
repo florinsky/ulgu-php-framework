@@ -111,7 +111,7 @@ class Application {
         $action_method = $action_name . 'Action';
         if(!method_exists($this->controller,$action_method)) {
             X::debug("Failed to run action: the method [$action_method] does not exist in the controller ".get_class($this->controller));
-            $action_method = '404Action';
+            $action_method = 'e404Action';
         }
         return $action_method;
     }
