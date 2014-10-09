@@ -1,11 +1,9 @@
 <?php
 
-namespace X\Components;
+require 'components/Application.php';
 
-require 'component/Component.php';
-require 'component/Application.php';
-
-
-(new Application())->run();
+(new \X\Components\Application([
+    'log.file'=>'/tmp/x.application.log'
+]))->run();
 
 
