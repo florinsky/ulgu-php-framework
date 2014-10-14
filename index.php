@@ -2,8 +2,6 @@
 
 require 'components/Application.php';
 
-(new \X\Components\Application([
-    'log.file'=>'/tmp/x.application.log'
-]))->run();
+(new \X\Components\Application('conf/main.conf.php'))->run();
 
 
