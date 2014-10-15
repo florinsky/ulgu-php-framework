@@ -2,7 +2,7 @@
 
 $root = dirname(__FILE__).'/../runtime';
 
-return [
+return array_merge_recursive([
     'application'=>[
         'name'=>'This is a Test Application',
     ],
@@ -25,5 +25,7 @@ return [
             'class'=>'\X\components\Request',
         ],
     ],
-];
+],
+include('conf/debug.conf.php')
+);
 
