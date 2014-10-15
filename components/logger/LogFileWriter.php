@@ -17,10 +17,6 @@ class LogFileWriter extends Component implements ILogWriter {
     }
 
     public function write($msg, $level) {
-        list($sec, $ts) = explode(" ", microtime());
-        $date_time = date("Y-m-d H:i:s", $ts)." $sec";
-        $pid = getmypid();
-        $str = "[$level] [$date_time] [$level] $msg \n";
-        File::append($this->log_file,$str);
+        File::append($this->log_file,$msg);
     }
 }
