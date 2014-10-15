@@ -4,7 +4,10 @@ return [
     'components'=>[
         'logger'=>[
             'class'=>'\X\components\logger\Logger',
-            'log.file'=>'/tmp/x.app.log'
+            'writer'=>[
+                'class'=>'\X\components\logger\LogFileWriter',
+                'log_file'=>'/tmp/x.app.log',
+            ]
         ],
     ],
 ];

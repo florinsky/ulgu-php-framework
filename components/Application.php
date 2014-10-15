@@ -1,16 +1,13 @@
 <?php
+
 namespace X\components;
 
+use X;
 use X\components\logger\Logger;
 use X\components\logger\LogFileWriter;
 
-class X {
-    static public $app;
-}
-
 class Application {
 
-    public $logger;
     public $conf_file;
     public $conf;
 
@@ -18,11 +15,11 @@ class Application {
         spl_autoload_register(array($this,'autoload'));
         $this->conf_file = $conf_file;
         $this->conf = include($this->conf_file);
-        if(!isset($this->conf['log.file'])) {
-            $this->conf['log.file'] = '/tmp/x.application.log';
+        if(isset($this->conf['components'])) {
+            foreach($this->conf['components'] as $field=>$component) {
+                $this->$field = $this->createObject($component);
+            }
         }
-        $this->logger = new Logger(new LogFileWriter($this->conf['log.file']));
-        $this->logger->info('Application is starting ...');
     }
 
     public function autoload($name) {
@@ -37,9 +34,29 @@ class Application {
 
     public function run() {
         X::$app = $this;
-        var_dump($this->createObject($this->conf['components']['logger']));
+        X::$app->logger->info('Hello!');
     }
 
+    /**
+     * Create object based on $conf array. I uses the key 'class' (array key) to specify the class name.
+     * Example:
+     * $conf = [
+     *     'class'=>'X\components\logger\Logger,
+     *     'writer=>[
+     *         'class'=>'X\components\logger\LogFileWriter',
+     *         'log_file'=>'/tmp/x.log',
+     *     ]
+     * ];
+     *
+     * It will recursively create LogFileWriter like this:
+     * new LogFileWriter(['log_file'=>'/tmp/x.log']);
+     *
+     * After that the Logger will be create:
+     * new Logger(['writer'=><LogFileWriter Object>]);
+     *
+     * Any other options from $conf array will be passed to the contructor as is.
+     * The 'class' key must present in the $conf.
+     **/
     public function createObject($conf) {
         // if this is a string - it is a class path
         if(is_string($conf)) {
@@ -48,9 +65,18 @@ class Application {
         if(!isset($conf['class'])) {
             throw new \Exception("Failed to create a new object because the 'class' is not specified. The requested class configuration is: ".print_r($conf));
         }
-        $class = $conf['class'];
-        unset($conf['class']);
-        return new $class($conf);
+        $options = [];
+        // Walk through the array and recusively create nested object if necessary.
+        foreach($conf as $key=>$value) {
+            if(is_array($value) and isset($options['class'])) {
+                $options[$key] = $this->createObject($value);
+            } else {
+                $options[$key] = $value;
+            }
+        }
+        $class = $options['class'];
+        unset($options['class']);
+        return new $class($options);
     }
 }
 
