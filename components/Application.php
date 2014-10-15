@@ -47,7 +47,7 @@ class Application {
      *   ],
      *   ...
      **/
-    private function log($msg) {
+    public function log($msg) {
         if(@$this->syslog) {
             // flush the internal buffer
             if(!empty($this->log_buffer)) {
@@ -70,13 +70,13 @@ class Application {
         array_shift($list);
         $path = implode('/',$list) . '.php';
         require $path;
-        $this->log("Autoload: $name");
     }
 
     public function run() {
         $this->init();
         X::$app = $this;
         X::$app->logger->info('Hello!');
+        $this->request->get('aa');
     }
 
     /**
