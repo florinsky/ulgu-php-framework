@@ -5,6 +5,7 @@ namespace X\components;
 use X;
 use X\components\logger\Logger;
 use X\components\logger\LogFileWriter;
+use X\components\helpers\Dumper;
 
 class Application {
 
@@ -46,6 +47,7 @@ class Application {
         if(!isset($this->conf['application']['debug'])) {
             $this->conf['application']['debug'] = true;
         }
+        $this->log("Loaded and processed configuration:\n".Dumper::dump($this->conf));
     }
 
     /**
