@@ -1,4 +1,5 @@
 runtime/*
 tags
 *.swp
+conf/local.conf.php
 
