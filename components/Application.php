@@ -20,8 +20,7 @@ class Application {
 
     private function init() {
         $this->log('Creating an Application object ...');
-        $this->conf = include($this->conf_file);
-        $this->log("Configuration file [{$this->conf_file}] read.");
+        $this->processConfig();
         if(isset($this->conf['components'])) {
             $this->log('Loading application components ...');
             foreach($this->conf['components'] as $field=>$component) {
@@ -29,6 +28,23 @@ class Application {
                 $this->$field = $this->createObject($component);
             }
             $this->log("Done.");
+        }
+    }
+
+    /**
+     * Add some default values to the loaded application configuration.
+     **/
+    private function processConfig() {
+        $this->conf = include($this->conf_file);
+        $this->log("Configuration file [{$this->conf_file}] read.");
+        if(!isset($this->conf['application'])) {
+            $this->conf['application'] = [];
+        }
+        if(!isset($this->conf['application']['name'])) {
+            $this->conf['application']['name'] = 'Test Application';
+        }
+        if(!isset($this->conf['application']['debug'])) {
+            $this->conf['application']['debug'] = true;
         }
     }
 
